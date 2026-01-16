@@ -99,73 +99,78 @@ export default function SignupLoginPage() {
 
   if (state === "login") {
     return (
-      <form
-        key="login-form" // needed for the unique form
-        className="flex flex-col min-h-svh items-center justify-center"
-        // here we connect the form with all the previous stuff of the loginForm with the help of the onSubmit property
-        onSubmit={loginForm.handleSubmit(onLoginSubmit)}
+     <form
+  key="login-form"
+  className="flex min-h-svh items-center justify-center bg-black/80"
+  onSubmit={loginForm.handleSubmit(onLoginSubmit)}
+>
+  <Grid>
+    <GridItem
+      span={{ lg: 6, md: 8, sm: 12 }}
+      offset={{ lg: 3, md: 2, sm: 0 }}
+      className="flex flex-col gap-8 bg-gray-900/90 backdrop-blur-md
+                 p-8 rounded-xl border border-white/10 shadow-xl"
+    >
+      {/* LOGO */}
+      <div className="relative mx-auto w-24 aspect-video">
+        <Image src="/logo/wandrstay-logo.svg" alt="wandrstay logo" fill />
+      </div>
+
+      <Text className="text-center text-[#DFAF44] text-xl font-bold tracking-wide">
+        Welcome Back
+      </Text>
+
+      <Input
+        {...loginForm.register("username")}
+        id="username"
+        label="Username"
+        placeholder="Username"
+        error={loginForm.formState.errors.username?.message}
+      />
+
+      <Input
+        {...loginForm.register("password")}
+        id="password"
+        label="Password"
+        placeholder="Password"
+        type="password"
+        error={loginForm.formState.errors.password?.message}
+      />
+
+      <NavLink
+        href="/password-reset"
+        className="self-end text-[#DFAF44] hover:underline"
+        textVariant="body-micro"
       >
-        <Grid>
-          <GridItem
-            span={{ lg: 6, md: 8, sm: 12 }}
-            offset={{ lg: 3, md: 2, sm: 0 }}
-            className="flex flex-col gap-l"
-          >
-            <div className="relative max-w-60px min-w-30px w-full aspect-video">
-              <Image src="/logo/wandrstay-logo.svg" alt="wandrstay logo" fill />
-            </div>
-            <Text>Welcome Back!</Text>
-            <Input
-              // here we spread the whole loginform object, and connect it specifically to the username. Now the input knows, that is has the state management of loginForm specifically for username
-              {...loginForm.register("username")}
-              id="username"
-              name="username"
-              label="Username"
-              placeholder="Username"
-              // here we connect the formState to the error of the input. Once we have an error in the formState of username, the error will be shown
-              error={loginForm.formState.errors.username?.message}
-            />
-            <Input
-              // here we spread the whole loginform object, and connect it specifically to the password. Now the input knows, that is has the state management of loginForm specifically for password
-              {...loginForm.register("password")}
-              id="password"
-              name="password"
-              label="Password"
-              placeholder="Password"
-              type="password"
-              // here we connect the formState to the error of the input. Once we have an error in the formState of password, the error will be shown
-              error={loginForm.formState.errors.password?.message}
-            />
-          </GridItem>
-          <GridItem
-            span={{ lg: 6, md: 8, sm: 12 }}
-            offset={{ lg: 3, md: 2, sm: 0 }}
-            className="flex flex-col gap-l"
-          >
-            <NavLink
-              href="/password-reset"
-              className="underline font-bold self-end"
-              textVariant="body-micro"
-            >
-              Forgot Password?
-            </NavLink>
-            <Button label="Login" type="submit" textVariant="label-small" />
-          </GridItem>
-          <GridItem
-            span={{ lg: 6, md: 8, sm: 12 }}
-            offset={{ lg: 3, md: 2, sm: 0 }}
-            className="flex gap-1"
-          >
-            <Text variant="body-micro">Don&apos;t have an account?</Text>
-            <Button
-              variant="ghost"
-              label="Sign up"
-              textVariant="body-micro"
-              onClick={() => setState("sign-up")}
-            />
-          </GridItem>
-        </Grid>
-      </form>
+        Forgot Password?
+      </NavLink>
+
+      <Button
+        label="Login"
+        type="submit"
+        textVariant="label-small"
+        className="w-full"
+      />
+    </GridItem>
+
+    <GridItem
+      span={{ lg: 6, md: 8, sm: 12 }}
+      offset={{ lg: 3, md: 2, sm: 0 }}
+      className="mt-6 flex items-center justify-center gap-2"
+    >
+      <Text variant="body-micro" className="text-gray-400">
+        Don&apos;t have an account?
+      </Text>
+      <Button
+        variant="ghost"
+        label="Sign up"
+        textVariant="body-micro"
+        onClick={() => setState("sign-up")}
+      />
+    </GridItem>
+  </Grid>
+</form>
+
     );
   }
 

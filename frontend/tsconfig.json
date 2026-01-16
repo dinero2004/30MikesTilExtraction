@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,15 +23,40 @@
       }
     ],
     "paths": {
-       "@/components/*": ["../frontend/src/app/components/*"],
-       "@/public/*": ["../frontend/public/*"],
-       "@/images/*": ["../frontend/public/images/*"],
-      "@/ui/*": ["../frontend/src/app/components/ui/*"],
-      "@/lib/*": ["../frontend/src/lib/*"],
-      "@/action/*": ["../frontend/src/actions/*"],
+      "@/components/*": [
+        "../frontend/src/app/components/*"
+      ],
+      "@/public/*": [
+        "../frontend/public/*"
+      ],
+      "@/images/*": [
+        "../frontend/public/images/*"
+      ],
+      "@/ui/*": [
+        "../frontend/src/app/components/ui/*"
+      ],
+      "@/lib/*": [
+        "../frontend/src/lib/*"
+      ],
+      "@/action/*": [
+        "../frontend/src/actions/*"
+      ],
+      "@/types/*": [
+        "../frontend/src/types"
+      ],
+      "@/utils/*": [
+        "../frontend/src/utils/*"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
-,
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

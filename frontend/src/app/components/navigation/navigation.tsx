@@ -1,13 +1,12 @@
-import { DropdownNav } from "../dropdown-nav/dropdown-nav";
-import { NavLink } from "../nav-link/nav-link";
+import { NavLink } from "../nav-link/nav-link"
 
 export const Navigation = () => {
   return (
-    <nav className="flex gap-m items-center">
+    <nav className="hidden md:flex items-center gap-m">
       <NavLink href="/">Home</NavLink>
       <NavLink href="/about">About</NavLink>
       <NavLink href="/news">News</NavLink>
-      <DropdownNav />
+      {/* <NavLink href="/model">Models</NavLink> */}
     </nav>
-  );
-};
+  )
+}

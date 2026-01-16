@@ -1,3 +1,4 @@
+import { DropdownNav } from "../dropdown-nav/dropdown-nav";
 import { Navigation } from "../navigation/navigation";
 
 export const Header = () => {
@@ -6,6 +7,10 @@ export const Header = () => {
                    bg-linear-to-r from-black to-[#434343]
                    border-b border-gray-700">
   <Navigation />
+   {/* Mobile menu */}
+      <div className="md:hidden">
+        <DropdownNav />
+      </div>
 </header>
 
   );
