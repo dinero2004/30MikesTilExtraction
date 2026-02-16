@@ -7,7 +7,7 @@ export const Footer = () => {
         <FooterLinks />
 
         <div className="flex justify-center gap-6">
-          <a href="https://steam.com" aria-label="Steam">
+          <a href="https://store.steampowered.com/app/4329510/30_Mikes_Til_Extraction_Demo/?beta=0" aria-label="Steam">
             <img
               src="/social-icons/SteamIcon.svg"
               alt="Steam"

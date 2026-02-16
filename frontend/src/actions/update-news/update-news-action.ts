@@ -1,55 +1,94 @@
-// src/actions/update-news/update-news-action.ts
 "use server";
 
 import { auth } from "@/auth/auth";
 import { fetchApi } from "@/utils/fetch/backend-fetch";
 
-/**
- * Data required to update a news entry
- */
 interface UpdateNewsData {
-  id: number;              // News ID to update
+  id: number;
   title?: string;
   subtitle?: string;
-  description?: string;   // plain text
-  image_id?: number;
+  description?: string;
+  image?: File | null;     // allow updating image
+  image_id?: number;       // fallback if already uploaded
 }
 
-/**
- * Result structure for the update news action
- */
 interface UpdateNewsResult {
   success: boolean;
   error?: string;
-  data?: Record<string, unknown>;
+  data?: unknown;
 }
 
-/**
- * Server action to update an existing news entry
- */
 export async function updateNewsAction(
   formData: UpdateNewsData
 ): Promise<UpdateNewsResult> {
   try {
     const session = await auth();
 
-    if (!session?.user?.id || !session?.accessToken) {
+    console.log("UPDATE TOKEN:", session?.accessToken);
+
+    if (!session?.accessToken) {
       return {
         success: false,
-        error: "You must be logged in to update a news entry",
+        error: "Unauthorized",
       };
     }
 
-    const { id, ...updateData } = formData;
+    const { id, image, ...rest } = formData;
 
-    const result = await fetchApi<Record<string, unknown>>(`news/${id}`, {
+    let imageId = rest.image_id ?? null;
+
+    /* -------------------------
+       1️⃣ Upload new image (optional)
+    -------------------------- */
+    if (image) {
+      const uploadData = new FormData();
+      uploadData.append("files[]", image);
+      uploadData.append("type", "news");
+      uploadData.append("title", rest.title ?? "");
+
+      const uploadResponse = await fetch(
+        `${process.env.BACKEND_URL}/api/uploads`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${session.accessToken}`,
+            Accept: "application/json",
+          },
+          body: uploadData,
+        }
+      );
+
+      console.log("UPLOAD STATUS:", uploadResponse.status);
+
+      const raw = await uploadResponse.text();
+      console.log("UPLOAD RAW:", raw);
+
+      if (!uploadResponse.ok) {
+        return {
+          success: false,
+          error: "Image upload failed",
+        };
+      }
+
+      const parsed = JSON.parse(raw);
+      imageId = parsed?.images?.[0]?.id ?? null;
+    }
+
+    /* -------------------------
+       2️⃣ Update news
+    -------------------------- */
+    const result = await fetchApi(`news/${id}`, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${session.accessToken}`,
       },
-      body: JSON.stringify(updateData),
+      body: JSON.stringify({
+        ...rest,
+        image_id: imageId,
+      }),
     });
+
+    console.log("UPDATE RESULT:", result);
 
     if (result.error) {
       return {
@@ -60,14 +99,15 @@ export async function updateNewsAction(
 
     return {
       success: true,
-      data: result.data || undefined,
+      data: result.data,
     };
+
   } catch (error) {
     console.error("Update news action error:", error);
 
     return {
       success: false,
-      error: "An unexpected error occurred while updating the news entry",
+      error: "Unexpected error while updating news",
     };
   }
 }

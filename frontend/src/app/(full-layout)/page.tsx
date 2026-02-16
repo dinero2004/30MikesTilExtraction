@@ -7,34 +7,34 @@ export default function Home() {
     <>
       <section className="relative min-h-screen w-full overflow-hidden">
         {/* HERO BACKGROUND */}
-        <ImageContainer
-          src="/images/hero-Image.png"
-          alt="Hero background"
-          className="absolute inset-0 -z-10 object-cover"
-        />
-        {/* TITLE BANNER */}
-        {/* using img because the ImageContainer uses objectFit cover that is not
-      suitable for the logo on the hero section */}
-        <img
-          src="/images/primary-logo.png"
-          alt="Primary logo"
-          className="absolute top-[30%] left-1/2
-             h-[15vh] max-h-40px
-             w-auto
-             -translate-x-1/2 -translate-y-1/2"
-        />
+        {/* Background Video */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/videos/30_Mikes_Trailer.mp4" type="video/mp4" />
+        </video>
         {/* DARK OVERLAY */}
         <div className="absolute inset-0 bg-black/50 -z-10" />
         {/* HERO CONTENT */}
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen text-center px-6">
+        <div className="relative z-10 flex flex-col items-center justify-end min-h-screen text-center px-6 pb-32">
           {/* CTA BUTTONS */}
           <div className="flex gap-4">
-            <Button label="PLAY NOW" />
+            <a
+              href="https://store.steampowered.com/app/4329510/30_Mikes_Til_Extraction_Demo/?beta=0"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button label="PLAY NOW" />
+            </a>
             <Button label="LEARN MORE" variant="secondary" />
           </div>
         </div>
         {/* BOTTOM STRIP */}
-        <div className="absolute bottom-0 w-full bg-amber-950 py-5">
+        <div className="absolute bottom-0 w-full bg-gray-800 py-5">
           <p className="text-center text-white font-bold tracking-widest">
             SURVIVE. &nbsp; FORTIFY. &nbsp; EXTRACT.
           </p>
@@ -46,21 +46,19 @@ export default function Home() {
       <section className="relative min-h-screen w-full overflow-hidden">
         {/* SECTION BACKGROUND */}
         <ImageContainer
-          src="/images/section2-Image.png"
+          src="/images/section2.png"
           alt="Soldier shooting against robot enemy"
           className="absolute inset-0 -z-10 object-cover"
         />
 
         {/* BLURRED TEXT PANEL */}
-        <div
-          className="absolute bottom-12  -translate-x1/2
-                max-w-3xl w-[90%]
+        <div   className="absolute bottom-0
+                max-w h-40
                 backdrop-blur-s bg-white/20
                 px-8 py-6
                 border border-white/10
-                shadow-[0_8px_32px_rgba(0,0,0,0.25)]"
-        >
-          <p className="text-center text-white font-semibold tracking-wide">
+                shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
+         <p className="text-left text-white font-semibold tracking-wide">
             30 Mikes 'Til Extraction is a single-player looter shooter with
             horror elements. You are a scavenger trying to survive in a
             destroyed ghost town on the modern border between Germany and
@@ -77,7 +75,7 @@ export default function Home() {
       <section className="relative min-h-screen w-full overflow-hidden">
         {/* SECTION BACKGROUND */}
         <ImageContainer
-          src="/images/town2.png"
+          src="/images/section3.png"
           alt="dark industrial brutalism city"
           className="absolute inset-0 -z-10 object-cover"
         />
@@ -101,63 +99,60 @@ export default function Home() {
         </div>
       </section>
 
-     
-
       {/* SECTION ENEMIES */}
 
-<section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
-  {/* BACKGROUND */}
-  <ImageContainer
-    src="/images/office.png"
-    alt="Abandoned office battlefield"
-    className="absolute inset-0 object-cover -z-20"
-  />
+      <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
+        {/* BACKGROUND */}
+        <ImageContainer
+          src="/images/section4.png"
+          alt="Abandoned office battlefield"
+          className="absolute inset-0 object-cover -z-20"
+        />
 
-  {/* OVERLAY */}
-  <div className="absolute inset-0 bg-black/70 -z-10" />
+        {/* OVERLAY */}
+        <div className="absolute inset-0 bg-black/70 -z-10" />
 
-  {/* ENEMIES */}
-  <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-12 max-w-6xl w-full px-8">
-    {[
-      {
-        name: "Riflemen",
-        src: "/images/rifleman.png",
-        alt: "Rifleman enemy",
-      },
-      {
-        name: "Machine Gunners",
-        src: "/images/machine-gunner.png",
-        alt: "Machine Gunner enemy",
-      },
-      {
-        name: "Commandos",
-        src: "/images/heavy-machine-gunner.png",
-        alt: "Commando enemy",
-      },
-    ].map((enemy) => (
-      <div key={enemy.name} className="flex flex-col items-center gap-4">
-        {/* IMAGE CARD */}
-        <div className="relative w-64 h-96 bg-black/40 border border-white/10 rounded-lg flex items-center justify-center p-6">
-          <ImageContainer
-            src={enemy.src}
-            alt={enemy.alt}
-            className="w-full h-full object-contain scale-90"
-          />
+        {/* ENEMIES */}
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-12 max-w-6xl w-full px-8">
+          {[
+            {
+              name: "Sturmknecht-39",
+              src: "/images/Sturmknecht_39.png",
+              alt: "Rifleman enemy",
+            },
+            {
+              name: "Stahlritter-42",
+              src: "/images/SR-42_thin.png",
+              alt: "Machine Gunner enemy",
+            },
+            {
+              name: "Eisenfaust-45",
+              src: "/images/EF-45_thin.png",
+              alt: "Commando enemy",
+            },
+          ].map((enemy) => (
+            <div key={enemy.name} className="flex flex-col items-center gap-4">
+              {/* IMAGE CARD */}
+              <div className="relative w-64 h-96 bg-black/40 border border-white/10 rounded-lg overflow-hidden">
+                <ImageContainer
+                  src={enemy.src}
+                  alt={enemy.alt}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* LABEL */}
+              <div className="w-64 bg-black/70 py-3 rounded-md text-center">
+                <p className="text-white text-sm font-semibold tracking-widest uppercase">
+                  {enemy.name}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
+      </section>
 
-        {/* LABEL */}
-        <div className="w-64 bg-black/70 py-3 rounded-md text-center">
-          <p className="text-white text-sm font-semibold tracking-widest uppercase">
-            {enemy.name}
-          </p>
-        </div>
-      </div>
-    ))}
-  </div>
-</section>
-
-
- {/* SECTION DIVIDER / STORY */}
+      {/* SECTION DIVIDER / STORY */}
       <section className="relative w-full py-32 bg-black flex items-center justify-center">
         {/* subtle divider line */}
         <div className="absolute top-0 w-full h-px bg-linear-to-r from-transparent via-white/20 to-transparent" />
@@ -182,39 +177,35 @@ export default function Home() {
 
       {/* SECTION WEAPONS */}
 
-  <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
-  {/* BACKGROUND */}
-  <ImageContainer
-    src="/images/background_weapons.png"
-    alt="30 Mike's Weapons Background"
-    className="absolute inset-0 -z-20"
-  />
-  <div className="my-24 px-12">
-  <Carousel
-  slides={[
-    {
-      image: "/images/30_Mikes_Pistol.png",
-      title: "Pistol",
-      description: "Reliable sidearm for close-quarters combat.",
-    },
-    {
-      image: "/images/30_Mikes_auto_rifle.png",
-      title: "Auto Rifle",
-      description: "Fully automatic rifle with high fire rate.",
-    },
-    {
-      image: "/images/30_Mikes_heavy_rifle.png",
-      title: "Heavy Rifle",
-      description: "High-caliber weapon built for armored targets.",
-    },
-  ]}
-/>
-</div>
-</section>
-
-
-
-
+      <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
+        {/* BACKGROUND */}
+        <ImageContainer
+          src="/images/section5.png"
+          alt="30 Mike's Weapons Background"
+          className="absolute inset-0 -z-20"
+        />
+        <div className="my-24 px-12">
+          <Carousel
+            slides={[
+              {
+                image: "/images/30_Mikes_Pistol.png",
+                title: "Pistol",
+                description: "Reliable sidearm for close-quarters combat.",
+              },
+              {
+                image: "/images/30_Mikes_auto_rifle.png",
+                title: "Auto Rifle",
+                description: "Fully automatic rifle with high fire rate.",
+              },
+              {
+                image: "/images/30_Mikes_heavy_rifle.png",
+                title: "Heavy Rifle",
+                description: "High-caliber weapon built for armored targets.",
+              },
+            ]}
+          />
+        </div>
+      </section>
     </>
   );
 }

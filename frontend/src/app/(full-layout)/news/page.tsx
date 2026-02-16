@@ -7,12 +7,16 @@ import type { PaginatedNewsResponse } from "@/types/responses/news-response";
 import { fetchApi } from "@/utils/fetch/backend-fetch";
 
 export default async function NewsPage() {
-const response = await fetchApi<PaginatedNewsResponse>("/news");
-const newsList = response.data?.data ?? [];
-console.log("NEWS COUNT:", newsList.length);
+const response = await fetchApi<PaginatedNewsResponse>("news");
+  const newsList = response.data?.data ?? [];
+  console.log(newsList.map(news => news.cover_image?.url));
+
 
   return (
-    <section className="max-w-5xl mx-auto p-8 space-y-8">
+    <section className="
+      min-h-screen h-full
+      bg-[url('/images/background.png')]
+      bg-no-repeat mx-auto px-8 py-16 space-y-12 text-white">
       <header>
         <h1 className="text-4xl font-bold">News</h1>
         <p className="text-muted-foreground">
@@ -26,18 +30,21 @@ console.log("NEWS COUNT:", newsList.length);
         <Grid className="py-2xl">
           {newsList.map((news) => (
             <Card key={news.id} slug={`/news/${news.slug}`}>
-d              <CardHeader
+              <CardHeader
                 title={news.title}
                 subtitle={news.subtitle}
                 description={news.description}
               />
 
-              {news.image_url && (
+              {news.cover_image?.url && (
                 <CardBody>
-                  <ImageContainer
-                    src={news.image_url}
-                    alt={news.title}
-                  />
+                  <div className="relative w-full h-56">
+                    <ImageContainer
+                      src={news.cover_image.url}
+                      alt={news.title}
+                      className="object-cover"
+                    />
+                  </div>
                 </CardBody>
               )}
             </Card>

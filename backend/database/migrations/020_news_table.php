@@ -15,7 +15,6 @@ return new class extends Migration {
                   $table->string('slug')->unique(); // Add the slug column here
                   $table->string('subtitle')->nullable();
                   $table->text('description')->nullable();
-                  $table->string('image_url')->nullable();
                   $table->timestamps();
             });
       }

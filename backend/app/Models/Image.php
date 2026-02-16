@@ -17,6 +17,11 @@ class Image extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function image(): BelongsTo
+    {
+        return $this->belongsTo(Image::class, 'image_id');
+    }
+
     public function news(): BelongsTo
     {
         return $this->belongsTo(News::class);

@@ -1,7 +1,7 @@
 <?php
 
 namespace Database\Factories;
-
+use Illuminate\Support\Str;
 use App\Models\Image;
 use App\Models\User;
 use App\Models\News;
@@ -13,9 +13,11 @@ class ImageFactory extends Factory
 
     public function definition(): array
     {
+        $filename = Str::uuid() . '.png';
+        
         return [
-            'url' => $this->faker->unique()->imageUrl(800, 600, 'news', true),
-            'name' => $this->faker->words(3, true),
+            'url' => "/storage/uploads/Admin/{$filename}",
+            'name'    => $filename,
             'user_id' => User::inRandomOrder()->value('id'),
             'news_id' => News::inRandomOrder()->value('id'),
         ];

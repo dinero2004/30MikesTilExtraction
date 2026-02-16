@@ -21,10 +21,17 @@ export interface News {
   subtitle: string;
   description: string;
   slug: string;
-  image_url: string;
   user_id: number;
   created_at: string;
   updated_at: string;
+
+  image_id: number | null;
+
+  cover_image?: {
+    id: number;
+    url: string;
+    name?: string;
+  };
 }
 
 /*

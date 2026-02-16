@@ -2,67 +2,81 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\News;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
     // GET /api/news
-   public function index()
-{
-    return News::latest()->paginate(10);
-}
+    public function index(Request $request)
+    {
+        return News::with('coverImage', 'user')
+            ->when(
+                $request->slug,
+                fn($q) =>
+                $q->where('slug', $request->slug)
+            )
+            ->latest()
+            ->paginate(10);
+    }
 
-
-    // GET /api/news/{id}
-    public function show($id)
+    // GET /api/news/{news}
+    public function show(News $news)
     {
         return response()->json(
-            News::findOrFail($id)
+            $news->load('coverImage', 'user')
         );
     }
 
     // POST /api/news
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'user_id'     => 'nullable|exists:users,id',
-            'title'       => 'required|string|max:255',
-            'subtitle'    => 'nullable|string|max:255',
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'subtitle' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'image_url'   => 'nullable|string|max:255'
+            'image_id' => 'nullable|exists:images,id'
         ]);
 
-        return response()->json(
-            News::create($data),
-            201
-        );
+        $validated['slug'] = \Str::slug($validated['title']);
+        $validated['user_id'] = $request->user()->id; // 🔥 IMPORTANT
+
+        $news = News::create($validated);
+
+        return response()->json([
+            'message' => 'News created successfully',
+            'data' => $news->load('coverImage', 'user')
+        ], 201);
     }
 
-    // PUT / PATCH /api/news/{id}
-    public function update(Request $request, $id)
+    // PUT / PATCH /api/news/{news}
+    public function update(Request $request, News $news)
     {
-        $news = News::findOrFail($id);
-
-        $data = $request->validate([
-            'title'       => 'sometimes|string|max:255',
-            'subtitle'    => 'sometimes|string|max:255',
-            'description' => 'sometimes|string',
-            'image_url'   => 'sometimes|string|max:255',
-            'user_id'     => 'nullable|exists:users,id'
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'subtitle' => 'nullable|string|max:255',
+            'description' => 'required|string',
+            'image_id' => 'nullable|exists:images,id'
         ]);
 
-        $news->update($data);
+        $validated['slug'] = Str::slug($validated['title']);
 
-        return response()->json($news);
+        $news->update($validated);
+
+        return response()->json([
+            'message' => 'News updated successfully',
+            'data' => $news->load('coverImage', 'user')
+        ]);
     }
 
-    // DELETE /api/news/{id}
-    public function destroy($id)
+    // DELETE /api/news/{news}
+    public function destroy(News $news)
     {
-        News::findOrFail($id)->delete();
+        $news->delete();
 
-        return response()->json(['message' => 'News deleted']);
+        return response()->json([
+            'message' => 'News deleted'
+        ]);
     }
 }

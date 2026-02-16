@@ -11,36 +11,29 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     // Login using username and password
-    public function login(Request $request)
-    {
-        // Validate the request
-        $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ]);
+  public function login(Request $request)
+{
+    $request->validate([
+        'username' => 'required|string',
+        'password' => 'required|string',
+    ]);
 
-        $username = $request->input('username');
-        $password = $request->input('password');
+    $user = User::where('username', $request->username)->first();
 
-        // Find the user by username
-        $user = User::where('username', $username)->first();
-        if (!$user) {
-            return abort(404, 'No such user');
-        }
-
-        // Check if the password is correct
-        if (!Hash::check($password, $user->password)) {
-            return abort(401, 'Wrong password');
-        }
-
-        // Create a token for the user
-        $token = $user->createToken('bearer');
-
+    if (!$user || !Hash::check($request->password, $user->password)) {
         return response()->json([
-            'token' => $token->plainTextToken,
-            'user' => $user,
-        ], 200);
+            'message' => 'Invalid credentials'
+        ], 401);
     }
+
+    $token = $user->createToken('api-token')->plainTextToken;
+
+    return response()->json([
+        'user' => $user,
+        'access_token' => $token, // 🔥 IMPORTANT
+    ], 200);
+}
+
 
     // Logout and revoke all tokens
     public function logout()

@@ -24,10 +24,10 @@ export default function AboutPage() {
       </div>
 
       {/* TEXT CONTENT */}
-      <div className="space-y-10">
+      <div className="space-y-10 text-white">
         {/* GOAL */}
         <div>
-          <h2 className="text-xl font-semibold mb-3">Goal</h2>
+          <h2 className="text-xl font-semibold mb-3 ">Goal</h2>
           <p className="text-sm text-muted-foreground max-w-2xl">
             8 Slice Games is a small indie studio consisting of seven students
             (two programmers, three artists, and two web developers). We formed

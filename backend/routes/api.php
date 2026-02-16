@@ -14,7 +14,6 @@ Route::get('/news', [NewsController::class, 'index']);
 Route::post('/uploads', [UploadsController::class, 'store'])
   ->middleware('auth:sanctum');
 
-
 // Users
 Route::put('/users/{id}', [UserController::class, 'update']);
 Route::patch('/users/{id}', [UserController::class, 'update']);
@@ -26,7 +25,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/uploads/{id}', [UploadsController::class, 'destroy']);
 });
 
-// News
-Route::put('/news/{id}', [NewsController::class, 'update']);
-Route::patch('/news/{id}', [NewsController::class, 'update']);
-Route::delete('/news/{id}', [NewsController::class, 'destroy']);
+Route::middleware('auth:sanctum')->group(function () {
+  Route::post('/news', [NewsController::class, 'store']);
+  Route::patch('/news/{id}', [NewsController::class, 'update']);
+  Route::delete('/news/{id}', [NewsController::class, 'destroy']);
+});

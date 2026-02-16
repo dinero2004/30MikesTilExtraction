@@ -41,17 +41,11 @@ export const EditNews = ({ data }: EditNewsProps) => {
   const [isUploading, setIsUploading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  /* -----------------------------
-     File selection
-  ----------------------------- */
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) setSelectedFile(file);
   };
 
-  /* -----------------------------
-     Upload image (CLIENT → API)
-  ----------------------------- */
   const handleImageUpload = async (file: File): Promise<number | null> => {
     setIsUploading(true);
 
@@ -61,10 +55,11 @@ export const EditNews = ({ data }: EditNewsProps) => {
       formData.append("type", "news");
       formData.append("title", title);
 
-      const response = await fetch("http://127.0.0.1:8000/api/uploads", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/uploads`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${session.accessToken}`,
+      Accept: "application/json",
         },
         body: formData,
       });
@@ -92,27 +87,34 @@ export const EditNews = ({ data }: EditNewsProps) => {
     }
   };
 
-  /* -----------------------------
-     Submit form
-  ----------------------------- */
   const onSubmit = async () => {
     setIsSubmitting(true);
 
     try {
-      let imageId: number | undefined = undefined;
+      let finalImageId = data.image_id ?? undefined;
 
       if (selectedFile) {
         const uploadedId = await handleImageUpload(selectedFile);
-        if (!uploadedId) return;
-        imageId = uploadedId;
+        if (!uploadedId) {
+          setIsSubmitting(false);
+          return;
+        }
+        finalImageId = uploadedId;
+      }
+
+      const payload: any = {
+        title,
+        subtitle,
+        description,
+      };
+
+      if (finalImageId) {
+        payload.image_id = finalImageId;
       }
 
       const result = await updateNewsAction({
         id: data.id,
-        title,
-        subtitle,
-        description,
-        image_id: imageId,
+        ...payload,
       });
 
       if (result.success) {
@@ -133,15 +135,13 @@ export const EditNews = ({ data }: EditNewsProps) => {
     <div className="min-h-screen py-2xl bg-neutral-800 flex justify-center">
       <div className="w-full max-w-4xl">
         <Grid className="bg-neutral-900 border border-white/10 shadow-xl p-xl gap-l">
-          
-          {/* Header */}
+
           <GridItem span={12}>
             <Text as="h1" variant="headline-2" className="text-white">
               Edit News
             </Text>
           </GridItem>
 
-          {/* Title */}
           <GridItem span={12}>
             <Input
               label="Title"
@@ -151,7 +151,6 @@ export const EditNews = ({ data }: EditNewsProps) => {
             />
           </GridItem>
 
-          {/* Subtitle */}
           <GridItem span={12}>
             <Input
               label="Subtitle"
@@ -161,7 +160,6 @@ export const EditNews = ({ data }: EditNewsProps) => {
             />
           </GridItem>
 
-          {/* Description */}
           <GridItem span={12}>
             <Textarea
               label="Description"
@@ -172,33 +170,12 @@ export const EditNews = ({ data }: EditNewsProps) => {
             />
           </GridItem>
 
-          {/* Image */}
           <GridItem span={12}>
             <label className="block text-sm font-medium mb-2 text-white">
               Cover Image
             </label>
 
-            {!selectedFile && !uploadedImage ? (
-              <>
-                {data.image_url && (
-                  <div className="relative w-full aspect-video overflow-hidden border border-white/10 mb-s">
-                    <Image
-                      src={data.image_url}
-                      alt="Current image"
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                )}
-
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileSelect}
-                  className="text-white file:bg-neutral-800 file:text-white file:border file:border-white/10 file:px-s file:py-xs"
-                />
-              </>
-            ) : (
+            {selectedFile || uploadedImage ? (
               <div className="relative w-full aspect-video overflow-hidden border border-white/10">
                 <Image
                   src={
@@ -221,10 +198,29 @@ export const EditNews = ({ data }: EditNewsProps) => {
                   &times;
                 </button>
               </div>
+            ) : (
+              <>
+                {data.cover_image?.url && (
+                  <div className="relative w-full aspect-video overflow-hidden border border-white/10 mb-s">
+                    <Image
+                      src={data.cover_image.url}
+                      alt="Current image"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                )}
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                  className="text-white file:bg-neutral-800 file:text-white file:border file:border-white/10 file:px-s file:py-xs"
+                />
+              </>
             )}
           </GridItem>
 
-          {/* Actions */}
           <GridItem span={12} className="flex gap-m pt-s border-t border-white/10">
             <Button
               variant="destructive"
@@ -237,6 +233,7 @@ export const EditNews = ({ data }: EditNewsProps) => {
               disabled={isSubmitting || isUploading}
             />
           </GridItem>
+
         </Grid>
       </div>
     </div>

@@ -1,58 +1,100 @@
-// src/actions/create-news/create-news-action.ts
 "use server";
 
 import { auth } from "@/auth/auth";
 import { fetchApi } from "@/utils/fetch/backend-fetch";
 
-/**
- * Data required to create a news entry
- */
 interface CreateNewsData {
   title: string;
   subtitle?: string;
-  description?: string; // plain text (NOT JSON)
-  image_id?: number;
+  description?: string;
+  image?: File | null;
 }
 
-/**
- * Result structure for the create news action
- */
 interface CreateNewsResult {
   success: boolean;
   error?: string;
-  data?: Record<string, unknown> | null;
+  data?: unknown;
 }
 
-/**
- * Server action to create a news entry
- */
 export async function createNewsAction(
   formData: CreateNewsData
 ): Promise<CreateNewsResult> {
   try {
     const session = await auth();
 
-    if (!session?.user?.id || !session?.accessToken) {
+    console.log("TOKEN:", session?.accessToken);
+    if (!session?.accessToken) {
       return {
         success: false,
-        error: "You must be logged in to create a news entry",
+        error: "Unauthorized",
       };
     }
 
-    const result = await fetchApi<Record<string, unknown>>("news", {
+    let imageId: number | null = null;
+
+    /* -------------------------
+       1️⃣ Upload Image (optional)
+    -------------------------- */
+ if (formData.image) {
+  const uploadData = new FormData();
+  uploadData.append("files[]", formData.image);
+  uploadData.append("type", "news");
+  uploadData.append("title", formData.title);
+
+  console.log("UPLOAD URL:", `${process.env.BACKEND_URL}/api/uploads`);
+  console.log("UPLOAD TOKEN:", session.accessToken);
+
+  const uploadResponse = await fetch(
+    `${process.env.BACKEND_URL}/api/uploads`,
+    {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.accessToken}`,
+        Accept: "application/json", // 🔥 IMPORTANT
+      },
+      body: uploadData,
+    }
+  );
+
+  console.log("UPLOAD STATUS:", uploadResponse.status);
+
+  const raw = await uploadResponse.text();
+  console.log("UPLOAD RAW RESPONSE:", raw);
+
+  if (!uploadResponse.ok) {
+    return {
+      success: false,
+      error: `Image upload failed (${uploadResponse.status})`,
+    };
+  }
+
+  const uploadResult = JSON.parse(raw);
+
+  imageId = uploadResult?.images?.[0]?.id ?? null;
+
+  if (!imageId) {
+    return { success: false, error: "Invalid upload response" };
+  }
+}
+
+    /* -------------------------
+       2️⃣ Create News
+    -------------------------- */
+    const result = await fetchApi("news", {
+      method: "POST",
+      headers: {
         Authorization: `Bearer ${session.accessToken}`,
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify({
+        title: formData.title,
+        subtitle: formData.subtitle ?? null,
+        description: formData.description ?? null,
+        image_id: imageId,
+      }),
     });
 
     if (result.error) {
-      return {
-        success: false,
-        error: result.error,
-      };
+      return { success: false, error: result.error };
     }
 
     return {
@@ -60,11 +102,11 @@ export async function createNewsAction(
       data: result.data,
     };
   } catch (error) {
-    console.error("Create news action error:", error);
+    console.error("Create news error:", error);
 
     return {
       success: false,
-      error: "An unexpected error occurred while creating the news entry",
+      error: "Unexpected error occurred",
     };
   }
 }
