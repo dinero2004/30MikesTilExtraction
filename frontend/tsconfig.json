@@ -51,7 +51,7 @@
         "../frontend/src/utils/*"
       ],
        "@/auth/*": [
-        "../frontend/src/auth"
+        "../frontend/src/auth.ts"
       ],
     }
   },
