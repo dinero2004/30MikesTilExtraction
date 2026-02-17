@@ -66,3 +66,33 @@ header, footer, section {
 .card-body {
   font-family: var(--font-roboto);
 }
+
+/* Carousel */
+
+/* White navigation arrows */
+.weapon-swiper .swiper-button-next,
+.weapon-swiper .swiper-button-prev {
+  color: white !important;
+  z-index: 50;
+}
+
+.weapon-swiper .swiper-button-next::after,
+.weapon-swiper .swiper-button-prev::after {
+  font-size: 28px;
+}
+
+/* Move pagination below content */
+.weapon-swiper .swiper-pagination {
+  position: relative !important;
+  margin-top: 30px;
+}
+
+/* White pagination bullets */
+.weapon-swiper .swiper-pagination-bullet {
+  background: white;
+  opacity: 0.5;
+}
+
+.weapon-swiper .swiper-pagination-bullet-active {
+  opacity: 1;
+}

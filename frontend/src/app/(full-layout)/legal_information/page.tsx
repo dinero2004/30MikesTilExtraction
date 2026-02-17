@@ -1,6 +1,6 @@
 export default function LegalInformationPage() {
   return (
-    <section className="min-h-screen bg-black text-white">
+    <section className="min-h-screen bg-black text-white font-roboto">
       <div className="max-w-4xl mx-auto px-8 py-16 space-y-10">
         <h1 className="text-4xl font-bold">Legal Information</h1>
 

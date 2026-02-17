@@ -26,4 +26,9 @@ class Image extends Model
     {
         return $this->belongsTo(News::class);
     }
+
+    public function getUrlAttribute($value)
+    {
+        return asset($value);
+    }
 }

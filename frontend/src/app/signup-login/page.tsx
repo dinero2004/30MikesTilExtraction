@@ -71,7 +71,7 @@ export default function LoginPage() {
         >
           {/* Title */}
           <Text className="text-center text-2xl font-bold tracking-wide text-[#DFAF44]">
-            Operator Login
+            Login
           </Text>
 
           {/* Username */}

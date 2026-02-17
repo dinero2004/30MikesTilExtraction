@@ -40,15 +40,16 @@ export default async function UserNews({ searchParams }: UserNewsProps) {
       <section className="
       min-h-screen h-full
       bg-[url('/images/background.png')]
-      bg-no-repeat mx-auto px-8 py-16 space-y-12 text-white">
-    <Grid className="py-2xl">
-      {/* HEADER */}
-      <GridItem span={12} className="flex flex-col gap-xs">
-        <Text as="h1" variant="headline-2">
-          Welcome back {session?.username}!
-        </Text>
-        <Text>What&apos;s your next Post?</Text>
-      </GridItem>
+      bg-no-repeat mx-auto px-8 py-16 space-y-12 text-white"
+    >
+      <Grid className="py-2xl">
+        {/* HEADER */}
+        <GridItem span={12} className="flex flex-col gap-xs">
+          <Text as="h1" variant="headline-2">
+            Welcome back {session?.username}!
+          </Text>
+          <Text>What&apos;s your next Post?</Text>
+        </GridItem>
 
       {/* ACTION */}
       <GridItem span={12} className="flex justify-end">

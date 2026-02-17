@@ -34,7 +34,7 @@ export default function Home() {
           </div>
         </div>
         {/* BOTTOM STRIP */}
-        <div className="absolute bottom-0 w-full bg-gray-800 py-5">
+        <div className="absolute bottom-0 w-full bg-black py-5">
           <p className="text-center text-white font-bold tracking-widest">
             SURVIVE. &nbsp; FORTIFY. &nbsp; EXTRACT.
           </p>
@@ -50,15 +50,15 @@ export default function Home() {
           alt="Soldier shooting against robot enemy"
           className="absolute inset-0 -z-10 object-cover"
         />
+      </section>
+        {/* SECTION DIVIDER / STORY */}
+      <section className="relative w-full py-32 bg-black flex items-center justify-center">
+        {/* subtle divider line */}
+        <div className="absolute top-0 w-full h-px bg-linear-to-r from-transparent via-white/20 to-transparent" />
+        <div className="absolute bottom-0 w-full h-px bg-linear-to-r from-transparent via-white/20 to-transparent" />
 
-        {/* BLURRED TEXT PANEL */}
-        <div   className="absolute bottom-0
-                max-w h-40
-                backdrop-blur-s bg-white/20
-                px-8 py-6
-                border border-white/10
-                shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
-         <p className="text-left text-white font-semibold tracking-wide">
+        <div className="max-w-3xl px-8 text-center space-y-6">
+           <p className="text-left text-white font-semibold tracking-wide">
             30 Mikes 'Til Extraction is a single-player looter shooter with
             horror elements. You are a scavenger trying to survive in a
             destroyed ghost town on the modern border between Germany and
@@ -79,17 +79,14 @@ export default function Home() {
           alt="dark industrial brutalism city"
           className="absolute inset-0 -z-10 object-cover"
         />
+      </section>
+  <section className="relative w-full py-32 bg-black flex items-center justify-center">
+        {/* subtle divider line */}
+        <div className="absolute top-0 w-full h-px bg-linear-to-r from-transparent via-white/20 to-transparent" />
+        <div className="absolute bottom-0 w-full h-px bg-linear-to-r from-transparent via-white/20 to-transparent" />
 
-        {/* BLURRED TEXT PANEL */}
-        <div
-          className="absolute bottom-0
-                max-w h-40
-                backdrop-blur-s bg-white/20
-                px-8 py-6
-                border border-white/10
-                shadow-[0_8px_32px_rgba(0,0,0,0.25)]"
-        >
-          <p className="text-left text-white font-semibold tracking-wide">
+        <div className="max-w-3xl px-8 text-center space-y-6">
+             <p className="text-left text-white font-semibold tracking-wide">
             Stranded in enemy territory, your unit has lost all contact with HQ.
             Your objective is clear: secure a structure, fortify your position,
             and survive until extraction arrives. Supplies are limited, threats
@@ -98,7 +95,6 @@ export default function Home() {
           </p>
         </div>
       </section>
-
       {/* SECTION ENEMIES */}
 
       <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
@@ -184,7 +180,6 @@ export default function Home() {
           alt="30 Mike's Weapons Background"
           className="absolute inset-0 -z-20"
         />
-        <div className="my-24 px-12">
           <Carousel
             slides={[
               {
@@ -204,7 +199,6 @@ export default function Home() {
               },
             ]}
           />
-        </div>
       </section>
     </>
   );

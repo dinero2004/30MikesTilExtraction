@@ -44,7 +44,6 @@ export const Textarea = forwardRef<
         )}
         {...props}
       />
-
       {error && (
         <Text as="span" variant="body-micro" className="text-red-600">
           {error}

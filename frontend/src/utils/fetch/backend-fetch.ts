@@ -15,8 +15,6 @@ export async function fetchApi<T>(
   const baseUrl = process.env.BACKEND_URL;
   const url = `${baseUrl}/api/${endpoint.replace(/^\/+/, "")}`;
 
-  console.log("FETCH URL:", url);
-
   try {
     const response = await fetch(url, {
       ...options,
@@ -29,9 +27,6 @@ export async function fetchApi<T>(
 
     const statusCode = response.status;
     const text = await response.text();
-
-    console.log("STATUS:", statusCode);
-    console.log("RAW RESPONSE:", text);
 
     let parsed: T | null = null;
 

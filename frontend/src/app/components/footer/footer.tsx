@@ -15,7 +15,7 @@ export const Footer = () => {
             />
           </a>
 
-          <a href="https://github.com" aria-label="GitHub">
+          <a href="https://github.com/dinero2004/30_Mikes_Til_Extraction" aria-label="GitHub">
             <img
               src="/social-icons/GithubIcon.svg"
               alt="GitHub"
