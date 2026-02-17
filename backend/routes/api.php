@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
   Route::post('/news', [NewsController::class, 'store']);
-  Route::patch('/news/{id}', [NewsController::class, 'update']);
-  Route::delete('/news/{id}', [NewsController::class, 'destroy']);
+ Route::patch('/news/{news}', [NewsController::class, 'update']);
+ Route::delete('/news/{news}', [NewsController::class, 'destroy']);
 });
+

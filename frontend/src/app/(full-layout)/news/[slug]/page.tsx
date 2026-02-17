@@ -35,7 +35,7 @@ export default async function NewsPage({ params }: NewsPageProps) {
   // Session
   const session = await auth();
 
-  const { title, subtitle, description, image, created_at } = news;
+  const { title, subtitle, description, cover_image, created_at } = news;
   const { username, id } = userResponse.data;
   // const sessionUserId = session?.user?.id;
   const sessionUserId = Number(session?.user?.id);
@@ -45,6 +45,10 @@ export default async function NewsPage({ params }: NewsPageProps) {
   console.log("NEWS USER ID:", id);
 
   return (
+    <section className="
+      min-h-screen h-full
+      bg-[url('/images/background.png')]
+      bg-no-repeat mx-auto px-8 py-16 space-y-12 text-white">
     <Grid className="py-3xl max-w-5xl mx-auto mt-5 mb-5 flex flex-col gap-2xl">
       {/* HEADER */}
       <GridItem span={12}>
@@ -55,8 +59,8 @@ export default async function NewsPage({ params }: NewsPageProps) {
                 {title}
               </Text>
 
-              <Text variant="body-micro" className="text-gray-500">
-                By <span className="font-medium text-gray-700">{username}</span>{" "}
+              <Text variant="body-micro" className="text-white">
+                By <span className="font-medium">{username}</span>{" "}
                 · {format(new Date(created_at), "MMMM d, yyyy")}
               </Text>
             </div>
@@ -77,7 +81,7 @@ export default async function NewsPage({ params }: NewsPageProps) {
 
           {/* SUBTITLE */}
           {subtitle && (
-            <Text className="mt-s text-lg text-gray-700 max-w-3xl">
+            <Text className="mt-s text-lg max-w-3xl">
               {subtitle}
             </Text>
           )}
@@ -85,10 +89,10 @@ export default async function NewsPage({ params }: NewsPageProps) {
       </GridItem>
 
           <GridItem span={12}>
-  {image?.url && (
+  {cover_image?.url && (
     <div className="w-full aspect-video relative rounded-2xl overflow-hidden shadow-md">
       <ImageContainer
-        src={image.url}
+        src={cover_image.url}
         alt={title}
       />
     </div>
@@ -99,11 +103,12 @@ export default async function NewsPage({ params }: NewsPageProps) {
       {/* CONTENT */}
       <GridItem span={12}>
         <div className="max-w-3xl mx-auto">
-          <Text className="leading-relaxed text-gray-800 whitespace-pre-line">
+          <Text className="leading-relaxed text-white -800 whitespace-pre-line">
             {description}
           </Text>
         </div>
       </GridItem>
     </Grid>
+    </section>
   );
 }

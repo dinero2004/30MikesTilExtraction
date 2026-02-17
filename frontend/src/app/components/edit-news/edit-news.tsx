@@ -87,49 +87,43 @@ export const EditNews = ({ data }: EditNewsProps) => {
     }
   };
 
-  const onSubmit = async () => {
-    setIsSubmitting(true);
+ const onSubmit = async () => {
+  setIsSubmitting(true);
 
-    try {
-      let finalImageId = data.image_id ?? undefined;
+  try {
+    let finalImageId = data.image_id ?? null;
 
-      if (selectedFile) {
-        const uploadedId = await handleImageUpload(selectedFile);
-        if (!uploadedId) {
-          setIsSubmitting(false);
-          return;
-        }
-        finalImageId = uploadedId;
+    if (selectedFile) {
+      const uploadedId = await handleImageUpload(selectedFile);
+      if (!uploadedId) {
+        setIsSubmitting(false);
+        return;
       }
-
-      const payload: any = {
-        title,
-        subtitle,
-        description,
-      };
-
-      if (finalImageId) {
-        payload.image_id = finalImageId;
-      }
-
-      const result = await updateNewsAction({
-        id: data.id,
-        ...payload,
-      });
-
-      if (result.success) {
-        toast.success("News updated successfully");
-        router.push("/news");
-      } else {
-        toast.error(result.error || "Failed to update news");
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error("Unexpected error while updating news");
-    } finally {
-      setIsSubmitting(false);
+      finalImageId = uploadedId;
     }
-  };
+
+    const result = await updateNewsAction({
+      slug: data.slug,      // 🔥 USE SLUG
+      title,
+      subtitle,
+      description,
+      image_id: finalImageId,
+    });
+
+    if (result.success) {
+      toast.success("News updated successfully");
+      router.push("/news");
+    } else {
+      toast.error(result.error || "Failed to update news");
+    }
+
+  } catch {
+    toast.error("Unexpected error");
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen py-2xl bg-neutral-800 flex justify-center">

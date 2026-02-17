@@ -52,24 +52,23 @@ class NewsController extends Controller
 
     // PUT / PATCH /api/news/{news}
     public function update(Request $request, News $news)
-    {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'subtitle' => 'nullable|string|max:255',
-            'description' => 'required|string',
-            'image_id' => 'nullable|exists:images,id'
-        ]);
+{
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'subtitle' => 'nullable|string|max:255',
+        'description' => 'nullable|string',
+        'image_id' => 'nullable|exists:images,id'
+    ]);
 
-        $validated['slug'] = Str::slug($validated['title']);
+    $validated['slug'] = Str::slug($validated['title']);
 
-        $news->update($validated);
+    $news->update($validated);
 
-        return response()->json([
-            'message' => 'News updated successfully',
-            'data' => $news->load('coverImage', 'user')
-        ]);
-    }
-
+    return response()->json([
+        'message' => 'News updated successfully',
+        'data' => $news->load('coverImage', 'user')
+    ]);
+}
     // DELETE /api/news/{news}
     public function destroy(News $news)
     {
