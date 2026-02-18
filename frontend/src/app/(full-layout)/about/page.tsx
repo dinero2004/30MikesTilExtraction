@@ -10,7 +10,7 @@ export default function AboutPage() {
       {/* TEAM IMAGE */}
       <div className="flex justify-center">
         <img
-          src="/images/about_us_image.jpeg"
+          src="/images/about_us_image.png"
           alt="Our team group photo"
           className="w-full max-w-3xl rounded-lg shadow-lg"
         />
