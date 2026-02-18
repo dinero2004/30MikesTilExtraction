@@ -1,6 +1,7 @@
 import { SessionProvider } from "next-auth/react";
-import { auth } from "../auth";
+import { auth } from "@/auth";
 import { ReactNode } from "react";
+import "./globals.css";
 
 export default async function RootLayout({
   children,
