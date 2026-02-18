@@ -51,14 +51,14 @@ export default function Home() {
           className="absolute inset-0 -z-10 object-cover"
         />
       </section>
-        {/* SECTION DIVIDER / STORY */}
+      {/* SECTION DIVIDER / STORY */}
       <section className="relative w-full py-32 bg-black flex items-center justify-center">
         {/* subtle divider line */}
         <div className="absolute top-0 w-full h-px bg-linear-to-r from-transparent via-white/20 to-transparent" />
         <div className="absolute bottom-0 w-full h-px bg-linear-to-r from-transparent via-white/20 to-transparent" />
 
         <div className="max-w-3xl px-8 text-center space-y-6">
-           <p className="text-left text-white font-semibold tracking-wide">
+          <p className="text-left text-white font-semibold tracking-wide">
             30 Mikes 'Til Extraction is a single-player looter shooter with
             horror elements. You are a scavenger trying to survive in a
             destroyed ghost town on the modern border between Germany and
@@ -80,18 +80,17 @@ export default function Home() {
           className="absolute inset-0 -z-10 object-cover"
         />
       </section>
-  <section className="relative w-full py-32 bg-black flex items-center justify-center">
+      <section className="relative w-full py-32 bg-black flex items-center justify-center">
         {/* subtle divider line */}
         <div className="absolute top-0 w-full h-px bg-linear-to-r from-transparent via-white/20 to-transparent" />
         <div className="absolute bottom-0 w-full h-px bg-linear-to-r from-transparent via-white/20 to-transparent" />
 
         <div className="max-w-3xl px-8 text-center space-y-6">
-             <p className="text-left text-white font-semibold tracking-wide">
-            Stranded in enemy territory, your unit has lost all contact with HQ.
-            Your objective is clear: secure a structure, fortify your position,
-            and survive until extraction arrives. Supplies are limited, threats
-            are constant, and every decision you make could mean the difference
-            between escape and annihilation.
+          <p className="text-left text-white font-semibold tracking-wide">
+            You are tasked to find as much loot in the building as possible in
+            30 Minutes, you have the freedom to leave whenever you want, and if
+            you do, you will be given a score on how much time you spend in the
+            compound, but also on how much loot you found.
           </p>
         </div>
       </section>
@@ -160,9 +159,11 @@ export default function Home() {
           </h2>
 
           <p className="text-white leading-relaxed">
-            The enemy is relentless. Every unit you encounter is designed to
-            overwhelm, suppress, and eliminate. Understanding their strengths is
-            the first step to surviving the extraction.
+            You are not alone in this compounds, enemies are coming out from
+            destroyed openings overseeing the area, trying to find you. Hide, or
+            fight, the choice is yours, but remember one thing: You are
+            outnumbered, and out gunned. But destroying this robots could
+            perhaps have its own reward, who knows!
           </p>
 
           <p className="text-white text-sm tracking-widest uppercase">
@@ -180,25 +181,25 @@ export default function Home() {
           alt="30 Mike's Weapons Background"
           className="absolute inset-0 -z-20"
         />
-          <Carousel
-            slides={[
-              {
-                image: "/images/30_Mikes_Pistol.png",
-                title: "Pistol",
-                description: "Reliable sidearm for close-quarters combat.",
-              },
-              {
-                image: "/images/30_Mikes_auto_rifle.png",
-                title: "Auto Rifle",
-                description: "Fully automatic rifle with high fire rate.",
-              },
-              {
-                image: "/images/30_Mikes_heavy_rifle.png",
-                title: "Heavy Rifle",
-                description: "High-caliber weapon built for armored targets.",
-              },
-            ]}
-          />
+        <Carousel
+          slides={[
+            {
+              image: "/images/30_Mikes_Pistol.png",
+              title: "Pistol",
+              description: "Reliable sidearm for close-quarters combat.",
+            },
+            {
+              image: "/images/30_Mikes_auto_rifle.png",
+              title: "Auto Rifle",
+              description: "Fully automatic rifle with high fire rate.",
+            },
+            {
+              image: "/images/30_Mikes_heavy_rifle.png",
+              title: "Heavy Rifle",
+              description: "High-caliber weapon built for armored targets.",
+            },
+          ]}
+        />
       </section>
     </>
   );
