@@ -10,6 +10,9 @@
   font-style: normal;
 }
 
+body {
+  font-family: "Capture_It", sans-serif;
+}
 /* =========================
    CSS Variables
 ========================= */
