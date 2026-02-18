@@ -5,7 +5,7 @@
 ========================= */
 @font-face {
   font-family: "Capture_It";
-  src: url("/fonts/Capture_It.ttf") format("truetype");
+  src: url("/frontend//public//fonts//Capture_it.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
