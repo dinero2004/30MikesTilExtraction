@@ -41,7 +41,7 @@ export const Logout = () => {
     <MenuItem
       href="/signup-login"
       title="Login or sign up"
-      description="Let us know your wandrstay"
+      description="Find out more"
     />
   );
 };

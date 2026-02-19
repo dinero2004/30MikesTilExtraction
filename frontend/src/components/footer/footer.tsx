@@ -23,7 +23,7 @@ export const Footer = () => {
             />
           </a>
 
-          <a href="https://linkedin.com" aria-label="LinkedIn">
+          <a href="https://www.linkedin.com/in/lazar-minkov-b0494b22a/" aria-label="LinkedIn">
             <img
               src="/social-icons/LinkedinIcon.svg"
               alt="LinkedIn"

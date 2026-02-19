@@ -1,7 +1,7 @@
 import Link from "next/link"
 
 const links = [
-  { label: "SOCIALS", href: "#" },
+  { label: "SOCIALS", href: "https://store.steampowered.com/app/4329510/30_Mikes_Til_Extraction_Demo/?beta=0" },
   { label: "IMPRINT", href: "/imprint" },
   { label: "LOGIN", href: "/signup-login" },
   { label: "LEGAL INFORMATION", href: "/legal_information" },

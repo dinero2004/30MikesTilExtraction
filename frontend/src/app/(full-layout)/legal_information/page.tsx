@@ -12,15 +12,16 @@ export default function LegalInformationPage() {
 
         {/* COMPANY */}
         <div>
-          <h2 className="text-xl font-semibold mb-3">Company Information</h2>
+          <h2 className="text-xl font-semibold mb-3">8 Slice Games</h2>
           <p className="text-sm text-gray-300">
-            Studio Name: 8 Slice Games (working title)
+            Studio Name: 8 Slice Games 
             <br />
             Project: 30 Mikes Till Extraction
             <br />
-            Address: To be announced
-            <br />
-            Country: To be announced
+            Address: 8 Slice Games / Lazar Minkov<br />
+          Scheunerweg 38<br />
+          3063 Itigen<br />
+          Switzerland
           </p>
         </div>
 
@@ -28,9 +29,9 @@ export default function LegalInformationPage() {
         <div>
           <h2 className="text-xl font-semibold mb-3">Contact</h2>
           <p className="text-sm text-gray-300">
-            Email: contact@example.com
+            Email: 8slicegames@gmail.com
             <br />
-            Phone: Not available
+            Phone: +41782348028 
           </p>
         </div>
 
@@ -49,7 +50,7 @@ export default function LegalInformationPage() {
           <h2 className="text-xl font-semibold mb-3">Copyright</h2>
           <p className="text-sm text-gray-300 max-w-3xl leading-relaxed">
             All content, graphics, text, and media on this website are subject to
-            copyright law. Unauthorized reproduction, distribution, or use is
+            copyright law and are intellectual property of 8 Slice Games Studio. Unauthorized reproduction, distribution, or use is
             prohibited unless explicitly permitted.
           </p>
         </div>

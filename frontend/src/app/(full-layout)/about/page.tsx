@@ -1,8 +1,7 @@
 export default function AboutPage() {
   return (
     <section className="
-      min-h-screen h-full
-      bg-[url('/images/background.png')]
+      min-h-screen h-full bg-gray-900
       bg-no-repeat mx-auto px-8 py-16 space-y-12">
       {/* TITLE */}
       <h1 className="text-4xl font-bold text-white">Our Team</h1>

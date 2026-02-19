@@ -1,5 +1,4 @@
 import { DropdownNav } from "../dropdown-nav/dropdown-nav"
-import { NavLink } from "../nav-link/nav-link"
 
 export const Navigation = () => {
   return (
