@@ -4,15 +4,10 @@ import { Button } from "@/components/ui/button/button";
 
 import localFont from "next/font/local";
 
-const capture = localFont({
-  src: "../../fonts/Capture_It.ttf",
-  display: "swap",
-});
-
 export default function Home() {
   return (
     <>
-      <section className="${capture.className} relative min-h-screen w-full overflow-hidden">
+      <section className="relative min-h-screen w-full overflow-hidden">
         {/* HERO BACKGROUND */}
         {/* Background Video */}
         <video
@@ -50,7 +45,7 @@ export default function Home() {
 
       {/* SECTION 2 */}
 
-      <section className="${capture.className} relative min-h-screen w-full overflow-hidden">
+      <section className=" relative min-h-screen w-full overflow-hidden">
         {/* SECTION BACKGROUND */}
         <ImageContainer
           src="/images/section2.png"
@@ -59,7 +54,7 @@ export default function Home() {
         />
       </section>
       {/* SECTION DIVIDER / STORY */}
-      <section className="${capture.className} relative w-full py-32 bg-black flex items-center justify-center">
+      <section className="relative w-full py-32 bg-black flex items-center justify-center">
         {/* subtle divider line */}
         <div className="absolute top-0 w-full h-px bg-linear-to-r from-transparent via-white/20 to-transparent" />
         <div className="absolute bottom-0 w-full h-px bg-linear-to-r from-transparent via-white/20 to-transparent" />
@@ -79,7 +74,7 @@ export default function Home() {
 
       {/* SECTION 3 */}
 
-      <section className="${capture.className} relative min-h-screen w-full overflow-hidden">
+      <section className=" relative min-h-screen w-full overflow-hidden">
         {/* SECTION BACKGROUND */}
         <ImageContainer
           src="/images/section3.png"
@@ -103,7 +98,7 @@ export default function Home() {
       </section>
       {/* SECTION ENEMIES */}
 
-      <section className="${capture.className} relative min-h-screen w-full flex items-center justify-center overflow-hidden">
+      <section className="$ relative min-h-screen w-full flex items-center justify-center overflow-hidden">
         {/* BACKGROUND */}
         <ImageContainer
           src="/images/section4.png"
@@ -155,7 +150,7 @@ export default function Home() {
       </section>
 
       {/* SECTION DIVIDER / STORY */}
-      <section className="${capture.className} relative w-full py-32 bg-black flex items-center justify-center">
+      <section className="$ relative w-full py-32 bg-black flex items-center justify-center">
         {/* subtle divider line */}
         <div className="absolute top-0 w-full h-px bg-linear-to-r from-transparent via-white/20 to-transparent" />
         <div className="absolute bottom-0 w-full h-px bg-linear-to-r from-transparent via-white/20 to-transparent" />
@@ -181,7 +176,7 @@ export default function Home() {
 
       {/* SECTION WEAPONS */}
 
-      <section className="${capture.className} relative min-h-screen w-full flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
         {/* BACKGROUND */}
         <ImageContainer
           src="/images/section5.png"
