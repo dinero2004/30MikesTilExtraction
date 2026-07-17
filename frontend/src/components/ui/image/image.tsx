@@ -1,27 +1,28 @@
 import Image from "next/image";
 
-type ImageContainerProps = {
+interface ImageContainerProps {
   src: string;
   alt: string;
   className?: string;
-};
+  priority?: boolean;
+  sizes?: string;
+}
 
 export const ImageContainer = ({
   src,
   alt,
   className,
-}: {
-  src: string;
-  alt: string;
-  className?: string;
-}) => {
+  priority = false,
+  sizes = "100vw",
+}: ImageContainerProps) => {
   return (
-    <img
+    <Image
       src={src}
       alt={alt}
+      fill
+      priority={priority}
+      sizes={sizes}
       className={className}
-      style={{ width: "100%", height: "100%", objectFit: "cover" }}
     />
   );
 };
-

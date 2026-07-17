@@ -2,6 +2,14 @@ import NextAuth, { Session, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
 
+interface LoginResponse {
+  user: {
+    id: number;
+    username: string;
+  };
+  access_token: string;
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   secret: process.env.AUTH_SECRET,
 
@@ -41,7 +49,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null;
         }
 
-        const data = await response.json();
+        const data = (await response.json()) as LoginResponse;
 
         return {
           id: String(data.user.id),
@@ -57,8 +65,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // Runs on login
       if (user) {
         token.id = user.id;
-        token.username = (user as any).username;
-        token.accessToken = (user as any).accessToken;
+        token.username = user.username;
+        token.accessToken = user.accessToken;
       }
 
       return token;

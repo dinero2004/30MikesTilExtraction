@@ -1,7 +1,8 @@
 "use client";
 
+import Image from "next/image";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -19,15 +20,11 @@ interface CarouselProps {
 }
 
 export default function Carousel({ images, slides }: CarouselProps) {
-  const data: WeaponSlide[] =
-    slides ?? images?.map((img) => ({ image: img })) ?? [];
+  const data: WeaponSlide[] = slides ?? images?.map((image) => ({ image })) ?? [];
 
   return (
-    <div className="flex justify-center w-full px-4">
-      <div className="w-full max-w-5xl bg-black/50 rounded-xl 
-                      px-6 py-10 
-                      md:px-16 md:pt-12 md:pb-16">
-
+    <div className="flex w-full justify-center px-4">
+      <div className="w-full max-w-5xl rounded-xl bg-black/50 px-6 py-10 md:px-16 md:pb-16 md:pt-12">
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
           slidesPerView={1}
@@ -38,27 +35,27 @@ export default function Carousel({ images, slides }: CarouselProps) {
           loop
           className="weapon-swiper"
         >
-          {data.map((item, index) => (
-            <SwiperSlide key={index}>
+          {data.map((item) => (
+            <SwiperSlide key={item.image}>
               <div className="text-center">
-                
-                <div className="flex justify-center items-center mb-6">
-                  <img
+                <div className="relative mb-6 h-64 w-full md:h-96">
+                  <Image
                     src={item.image}
-                    alt={item.title ?? "weapon"}
-                    className="h-64 md:h-96 object-contain"
+                    alt={item.title ?? "Weapon"}
+                    fill
+                    sizes="(min-width: 768px) 900px, 100vw"
+                    className="object-contain"
                   />
                 </div>
 
                 {item.title && (
-                  <h3 className="text-xl md:text-2xl font-semibold text-gray-200">
+                  <h3 className="text-xl font-semibold text-gray-200 md:text-2xl">
                     {item.title}
                   </h3>
                 )}
 
                 {item.description && (
-                  <p className="mt-4 text-base md:text-lg text-gray-400 
-                                max-w-xl md:max-w-3xl mx-auto">
+                  <p className="mx-auto mt-4 max-w-xl text-base text-gray-400 md:max-w-3xl md:text-lg">
                     {item.description}
                   </p>
                 )}
@@ -66,7 +63,6 @@ export default function Carousel({ images, slides }: CarouselProps) {
             </SwiperSlide>
           ))}
         </Swiper>
-
       </div>
     </div>
   );

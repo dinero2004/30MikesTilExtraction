@@ -1,103 +1,239 @@
 @import "tailwindcss";
 
-/* =========================
-   Custom Fonts
-========================= */
-@font-face {
-  font-family: "CaptureIt";
-  src: url("/fonts/capture-it/Capture-it.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
+:root {
+  --ink: #050606;
+  --surface: #0b0d0e;
+  --surface-elevated: #111416;
+  --line: rgba(255, 255, 255, 0.12);
+  --paper: #f1eee6;
+  --muted: #9c9d99;
+  --amber: #d7a53d;
+  --amber-bright: #f0c25d;
+  --signal: #e6493f;
+  --font-sans: "Helvetica Neue", "Inter", "Segoe UI", Arial, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--ink);
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: "CaptureIt", serif;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
 }
 
-/* =========================
-   CSS Variables
-========================= */
-:root {
-  --font-capture: "CaptureIt", serif;
-  --font-roboto: "Roboto", system-ui, sans-serif;
-  --font-ui: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-
-  --background: #ffffff;
-  --foreground: #434343;
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #434343;
-    --foreground: #ededed;
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+::selection {
+  background: var(--amber);
+  color: #050606;
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.site-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+.micro-grid {
+  background-image:
+    linear-gradient(rgba(215, 165, 61, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(215, 165, 61, 0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.grain::after {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.08) 0 0.6px, transparent 0.8px),
+    radial-gradient(circle at 75% 68%, rgba(255, 255, 255, 0.055) 0 0.5px, transparent 0.75px);
+  background-size: 7px 7px, 11px 11px;
+  content: "";
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.edge-fade {
+  mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+}
+
+.panel-cut {
+  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+}
+
+.hud-corners {
+  background:
+    linear-gradient(var(--amber), var(--amber)) left top / 22px 1px no-repeat,
+    linear-gradient(var(--amber), var(--amber)) left top / 1px 22px no-repeat,
+    linear-gradient(var(--amber), var(--amber)) right bottom / 22px 1px no-repeat,
+    linear-gradient(var(--amber), var(--amber)) right bottom / 1px 22px no-repeat;
+}
+
+.scan-line::after {
+  position: absolute;
+  z-index: 2;
+  top: -25%;
+  right: 0;
+  left: 0;
+  height: 18%;
+  background: linear-gradient(to bottom, transparent, rgba(215, 165, 61, 0.13), transparent);
+  content: "";
+  pointer-events: none;
+  animation: scan 8s linear infinite;
+}
+
+.signal-dot {
+  box-shadow: 0 0 0 0 rgba(230, 73, 63, 0.58);
+  animation: signal 2.2s ease-out infinite;
+}
+
+.hero-entry {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: hero-entry 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-entry-delay-1 {
+  animation-delay: 0.12s;
+}
+
+.hero-entry-delay-2 {
+  animation-delay: 0.24s;
+}
+
+.hero-entry-delay-3 {
+  animation-delay: 0.36s;
+}
+
+.float-slow {
+  animation: float 7s ease-in-out infinite;
+}
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  animation: reveal-once 0.75s ease-out 0.2s forwards;
+}
+
+@supports (animation-timeline: view()) {
+  .scroll-reveal {
+    animation: reveal-on-scroll linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 32%;
   }
 }
 
-/* =========================
-   Base Styles
-========================= */
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-roboto);
+.threat-card img {
+  transform: translateY(10px) scale(0.98);
+  transition: filter 500ms ease, transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-form {
-  font-family: var(--font-capture);
+.threat-card:hover img {
+  filter: saturate(1.08) contrast(1.04);
+  transform: translateY(0) scale(1.045);
 }
 
-header, footer, section {
-  font-family: var(--font-capture);
+.weapon-card img {
+  transition: transform 650ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* =========================
-   Font Utility Classes
-========================= */
-.font-capture {
-  font-family: var(--font-capture);
+.weapon-card:hover img {
+  transform: translateY(-8px) rotate(-1.5deg) scale(1.045);
 }
 
-.font-roboto {
-  font-family: var(--font-roboto);
+@keyframes hero-entry {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.font-ui {
-  font-family: var(--font-ui);
+@keyframes reveal-once {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.card-body {
-  font-family: var(--font-roboto);
+@keyframes reveal-on-scroll {
+  from {
+    opacity: 0;
+    transform: translateY(36px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Carousel */
-
-/* White navigation arrows */
-.weapon-swiper .swiper-button-next,
-.weapon-swiper .swiper-button-prev {
-  color: white !important;
-  z-index: 50;
+@keyframes signal {
+  70% {
+    box-shadow: 0 0 0 8px rgba(230, 73, 63, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(230, 73, 63, 0);
+  }
 }
 
-.weapon-swiper .swiper-button-next::after,
-.weapon-swiper .swiper-button-prev::after {
-  font-size: 28px;
+@keyframes scan {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(800%);
+  }
 }
 
-/* Move pagination below content */
-.weapon-swiper .swiper-pagination {
-  position: relative !important;
-  margin-top: 30px;
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
-/* White pagination bullets */
-.weapon-swiper .swiper-pagination-bullet {
-  background: white;
-  opacity: 0.5;
-}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 
-.weapon-swiper .swiper-pagination-bullet-active {
-  opacity: 1;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }

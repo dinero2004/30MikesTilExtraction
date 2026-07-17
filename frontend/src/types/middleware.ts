@@ -1,11 +1,12 @@
 import { auth } from "../../src/auth";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import type { Session } from "next-auth";
 
 const protectedRoutes = ["/dashboard", "/profile"];
 const authRoutes = ["/login"];
 
-export default auth((req: NextRequest & { auth: any }) => {
+export default auth((req: NextRequest & { auth: Session | null }) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 
