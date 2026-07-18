@@ -41,9 +41,14 @@ export async function fetchApi<T>(
     }
 
     if (!response.ok) {
+      const message =
+        parsed && typeof parsed === "object" && "message" in parsed
+          ? String(parsed.message)
+          : `Request failed (${statusCode})`;
+
       return {
         data: null,
-        error: (parsed as any)?.message || `Request failed (${statusCode})`,
+        error: message,
         statusCode,
       };
     }
@@ -64,4 +69,3 @@ export async function fetchApi<T>(
     };
   }
 }
-

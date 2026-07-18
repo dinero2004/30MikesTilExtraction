@@ -65,7 +65,7 @@ export default async function UserNews({ searchParams }: UserNewsProps) {
       {/* NEWS CARDS */}
       {responseData?.map((news) => (
         <GridItem key={news.id} span={{ lg: 4, md: 6, sm: 12 }}>
-          <Card slug={`/news/${news.slug}`}>c
+          <Card slug={`/news/${news.slug}`}>
             <CardHeader
               title={news.title}
               subtitle={news.subtitle}
@@ -75,11 +75,11 @@ export default async function UserNews({ searchParams }: UserNewsProps) {
             {news.cover_image && (
               <CardBody>
                 <ImageContainer
-        src={news.cover_image.url}
-        alt={news.title}
-        className="object-cover"
-      />
-                <img src={news.cover_image?.url} alt={news.title} />
+                  src={news.cover_image.url}
+                  alt={news.title}
+                  className="object-cover"
+                  sizes="(min-width: 1024px) 33vw, 100vw"
+                />
               </CardBody>
             )}
           </Card>

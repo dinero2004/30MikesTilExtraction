@@ -8,7 +8,7 @@ interface HomeLayoutProps {
 }
 export default function HomeLayout({ children }: HomeLayoutProps) {
   return (
-    <main className={`w-full h-svh flex flex-col`}>
+    <main className="flex min-h-screen w-full flex-col bg-[#050606]">
       <Header />
       <div className="w-full flex-1">{children}</div>
       <Footer />

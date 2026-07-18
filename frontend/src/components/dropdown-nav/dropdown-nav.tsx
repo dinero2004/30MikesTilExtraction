@@ -1,14 +1,16 @@
+"use client";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuPortal,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
+import { Dashboard } from "../dashboard/dashboard";
+import { Logout } from "../logout/logout";
 import { MenuButton } from "../menu-button/menu-button";
 import { MenuItem } from "../menu-item/menu-item";
-import { MenuSeperator } from "@/components/menu-separator/menu-separator";
-import { Logout } from "../logout/logout";
-import { Dashboard } from "../dashboard/dashboard";
+import { MenuSeperator } from "../menu-separator/menu-separator";
 
 export const DropdownNav = () => {
   return (
@@ -18,14 +20,17 @@ export const DropdownNav = () => {
       </DropdownMenuTrigger>
       <DropdownMenuPortal>
         <DropdownMenuContent
-          className="bg-gray-900 p-6 rounded-xl flex flex-col gap-4 shadow-xl"
+          className="z-[70] flex w-[min(330px,calc(100vw-32px))] flex-col border border-white/12 bg-[#0b0d0e]/98 p-2 shadow-2xl shadow-black/70 backdrop-blur-xl data-[state=open]:animate-in"
           align="end"
-          sideOffset={16}
+          sideOffset={14}
         >
-          <MenuItem href="/" title="Home" description="Game Overview" />
-          <MenuItem href="/about" title="About" description="Find out more" />
-          <MenuItem href="/news" title="News" description="Latest updates" />
-          <MenuItem href="/model" title="Models" description="3D Model Viewer" />
+          <div className="px-4 pb-3 pt-2 font-mono text-[10px] uppercase tracking-[0.24em] text-[#d7a53d]">
+            Field navigation / 04
+          </div>
+          <MenuItem href="/" title="Home" description="Mission overview" />
+          <MenuItem href="/news" title="News" description="Field transmissions" />
+          <MenuItem href="/about" title="Studio" description="Meet 8 Slice Games" />
+          <MenuItem href="/model" title="Archive" description="Inspect enemy units" />
           <Dashboard />
           <MenuSeperator />
           <Logout />

@@ -1,116 +1,140 @@
-"use client"
+"use client";
 
-import { useEffect, useRef } from "react"
-import * as THREE from "three"
-import { OrbitControls } from "three-stdlib"
-import { OBJLoader } from "three-stdlib"
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
+import { OBJLoader, OrbitControls } from "three-stdlib";
 
 export default function ObjViewer() {
-  const mountRef = useRef<HTMLDivElement>(null)
+  const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!mountRef.current) return
+    const mountNode = mountRef.current;
+    if (!mountNode) return;
 
-    // Scene
-    const scene = new THREE.Scene()
-    scene.background = new THREE.Color("#000000")
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color("#080a0b");
+    scene.fog = new THREE.Fog("#080a0b", 8, 16);
 
-    // Camera
-    const camera = new THREE.PerspectiveCamera(
-      60,
-      mountRef.current.clientWidth / mountRef.current.clientHeight,
-      0.1,
-      1000
-    )
-    camera.position.set(0, 2, 6)
-    camera.lookAt(0, 0, 0)
+    const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 100);
+    camera.position.set(0, 1.3, 6.8);
+    camera.lookAt(0, 0.7, 0);
 
-    // Renderer
-    const renderer = new THREE.WebGLRenderer({ antialias: true })
-    renderer.setSize(
-      mountRef.current.clientWidth,
-      mountRef.current.clientHeight
-    )
-    mountRef.current.appendChild(renderer.domElement)
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
+    renderer.domElement.style.width = "100%";
+    renderer.domElement.style.height = "100%";
+    renderer.domElement.style.display = "block";
+    mountNode.appendChild(renderer.domElement);
 
-    // Lights
-    scene.add(new THREE.AmbientLight(0xffffff, 0.8))
-    const dirLight = new THREE.DirectionalLight(0xffffff, 2)
-    dirLight.position.set(5, 10, 7)
-    scene.add(dirLight)
+    scene.add(new THREE.HemisphereLight(0xd9c79f, 0x111315, 1.65));
 
-    // Controls
-    const controls = new OrbitControls(camera, renderer.domElement)
-    controls.enableDamping = true
+    const keyLight = new THREE.DirectionalLight(0xffe1a3, 3.2);
+    keyLight.position.set(4, 7, 5);
+    scene.add(keyLight);
 
-    // Texture loader
-    const textureLoader = new THREE.TextureLoader()
+    const rimLight = new THREE.DirectionalLight(0xe6493f, 2.4);
+    rimLight.position.set(-5, 2, -4);
+    scene.add(rimLight);
 
-    const baseColor = textureLoader.load(
-      "/models/textures/T_Stahlritter-42_BC.png"
-    )
-    const normalMap = textureLoader.load(
-      "/models/textures/T_Stahlritter-42_N.png"
-    )
-    const ormMap = textureLoader.load(
-      "/models/textures/T_Stahlritter-42_ORM.png"
-    )
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.enablePan = false;
+    controls.minDistance = 3.8;
+    controls.maxDistance = 9;
+    controls.target.set(0, 0.65, 0);
 
-    // OBJ Loader
-    const loader = new OBJLoader()
+    const textureLoader = new THREE.TextureLoader();
+    const baseColor = textureLoader.load("/models/textures/T_Stahlritter-42_BC.png");
+    const normalMap = textureLoader.load("/models/textures/T_Stahlritter-42_N.png");
+    const ormMap = textureLoader.load("/models/textures/T_Stahlritter-42_ORM.png");
+    baseColor.colorSpace = THREE.SRGBColorSpace;
+
+    let loadedObject: THREE.Object3D | null = null;
+    let disposed = false;
+
+    const loader = new OBJLoader();
     loader.load(
       "/models/Stahl_Ritter_42.obj",
       (object) => {
-        object.traverse((child: any) => {
-          if (!child.isMesh) return
+        if (disposed) return;
+
+        object.traverse((child) => {
+          if (!(child instanceof THREE.Mesh)) return;
 
           child.material = new THREE.MeshStandardMaterial({
             map: baseColor,
-            normalMap: normalMap,
+            normalMap,
             roughnessMap: ormMap,
             metalnessMap: ormMap,
-            metalness: 1,
-            roughness: 1,
-          })
+            metalness: 0.68,
+            roughness: 0.78,
+          });
 
-          // Required for AO maps (if UV2 exists)
-          child.geometry.setAttribute(
-            "uv2",
-            new THREE.BufferAttribute(
-              child.geometry.attributes.uv.array,
-              2
-            )
-          )
-        })
+          const uv = child.geometry.attributes.uv;
+          if (uv && !child.geometry.attributes.uv2) {
+            child.geometry.setAttribute("uv2", new THREE.BufferAttribute(uv.array, 2));
+          }
+        });
 
-        // Center model
-        const box = new THREE.Box3().setFromObject(object)
-        const center = box.getCenter(new THREE.Vector3())
-        object.position.sub(center)
+        const box = new THREE.Box3().setFromObject(object);
+        const center = box.getCenter(new THREE.Vector3());
+        object.position.sub(center);
+        object.position.y = 0.1;
+        object.scale.setScalar(1.35);
 
-        // Scale
-        object.scale.set(1.2, 1.2, 1.2)
-
-        scene.add(object)
+        loadedObject = object;
+        scene.add(object);
       },
       undefined,
-      (error) => console.error("OBJ load error:", error)
-    )
+      (error) => console.error("OBJ load error:", error),
+    );
 
-    // Render loop
+    const resize = () => {
+      const width = mountNode.clientWidth;
+      const height = mountNode.clientHeight;
+      camera.aspect = width / Math.max(height, 1);
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height, false);
+    };
+
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(mountNode);
+    resize();
+
+    let animationFrame = 0;
     const animate = () => {
-      requestAnimationFrame(animate)
-      controls.update()
-      renderer.render(scene, camera)
-    }
-    animate()
+      controls.update();
+      renderer.render(scene, camera);
+      animationFrame = requestAnimationFrame(animate);
+    };
+    animate();
 
-    // Cleanup
     return () => {
-      renderer.dispose()
-      mountRef.current?.removeChild(renderer.domElement)
-    }
-  }, [])
+      disposed = true;
+      cancelAnimationFrame(animationFrame);
+      resizeObserver.disconnect();
+      controls.dispose();
+      baseColor.dispose();
+      normalMap.dispose();
+      ormMap.dispose();
 
-  return <div ref={mountRef} className="w-full h-[500px]" />
+      loadedObject?.traverse((child) => {
+        if (!(child instanceof THREE.Mesh)) return;
+        child.geometry.dispose();
+        if (Array.isArray(child.material)) {
+          child.material.forEach((material) => material.dispose());
+        } else {
+          child.material.dispose();
+        }
+      });
+
+      renderer.dispose();
+      renderer.domElement.remove();
+    };
+  }, []);
+
+  return <div ref={mountRef} className="size-full min-h-[560px] lg:min-h-[720px]" />;
 }

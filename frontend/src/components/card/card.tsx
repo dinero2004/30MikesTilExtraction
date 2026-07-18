@@ -4,10 +4,12 @@ import { GridItem } from "../ui/grid/grid";
 
 interface CardProps {
   children: ReactNode;
-  slug: string;
+  slug?: string;
 }
 
 export const Card = ({ children, slug }: CardProps) => {
+  const content = <div className="flex h-full flex-col">{children}</div>;
+
   return (
     <GridItem
       span={{ sm: 12, md: 6, lg: 4 }}
@@ -24,9 +26,7 @@ export const Card = ({ children, slug }: CardProps) => {
         cursor-pointer
       "
     >
-      <Link href={slug} className="flex h-full flex-col">
-        {children}
-      </Link>
+      {slug ? <Link href={slug}>{content}</Link> : content}
     </GridItem>
   );
 };

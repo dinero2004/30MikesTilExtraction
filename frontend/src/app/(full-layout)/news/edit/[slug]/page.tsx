@@ -1,8 +1,5 @@
 import { auth } from "@/auth";
 import { EditNews } from "@/components/edit-news/edit-news";
-import { NavLink } from "@/components/nav-link/nav-link";
-import { Grid, GridItem } from "@/components/ui/grid/grid";
-import { Text } from "@/components/ui/text/text";
 import type { PaginatedNewsResponse } from "@/types/responses/news-response";
 import { fetchApi } from "@/utils/fetch/backend-fetch";
 import { notFound } from "next/navigation";

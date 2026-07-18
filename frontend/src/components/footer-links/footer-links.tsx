@@ -1,24 +1,29 @@
-import Link from "next/link"
+import Link from "next/link";
 
 const links = [
-  { label: "SOCIALS", href: "https://store.steampowered.com/app/4329510/30_Mikes_Til_Extraction_Demo/?beta=0" },
-  { label: "IMPRINT", href: "/imprint" },
-  { label: "LOGIN", href: "/signup-login" },
-  { label: "LEGAL INFORMATION", href: "/legal_information" },
-]
+  { label: "Game", href: "/#mission" },
+  { label: "News", href: "/news" },
+  { label: "Studio", href: "/about" },
+  { label: "Enemy archive", href: "/model" },
+  { label: "Imprint", href: "/imprint" },
+  { label: "Legal", href: "/legal_information" },
+] as const;
 
 export const FooterLinks = () => {
   return (
-    <nav className="flex flex-col items-center gap-3 text-sm font-semibold text-[#DFAF44] md:flex-row md:justify-center md:gap-8">
-      {links.map(link => (
+    <nav
+      aria-label="Footer navigation"
+      className="grid grid-cols-2 gap-x-8 gap-y-4 sm:grid-cols-3 lg:justify-self-end"
+    >
+      {links.map((link) => (
         <Link
-          key={link.label}
+          key={link.href}
           href={link.href}
-          className="tracking-wide drop-shadow-[1px_1px_1px_rgba(0,0,0,0.6)]"
+          className="text-xs font-semibold uppercase tracking-[0.16em] text-white/55 transition hover:text-[#f0c25d]"
         >
           {link.label}
         </Link>
       ))}
     </nav>
-  )
-}
+  );
+};

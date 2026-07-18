@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input/input";
 import { Text } from "@/components/ui/text/text";
 import { Textarea } from "@/components/ui/textarea/textarea";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
@@ -25,12 +25,7 @@ interface EditNewsProps {
 
 export const EditNews = ({ data }: EditNewsProps) => {
   const router = useRouter();
-  const { data: session } = useSession();
-
-  if (!session?.accessToken) {
-    toast.error("You are not authenticated");
-    return null;
-  }
+  const { data: session, status } = useSession();
 
   const [title, setTitle] = useState(data.title);
   const [subtitle, setSubtitle] = useState(data.subtitle ?? "");
@@ -38,12 +33,33 @@ export const EditNews = ({ data }: EditNewsProps) => {
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadedImage, setUploadedImage] = useState<UploadedImage | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      toast.error("You are not authenticated");
+      router.replace("/signup-login");
+    }
+  }, [router, status]);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
+
+  if (status === "loading" || !session?.accessToken) {
+    return null;
+  }
+
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) setSelectedFile(file);
+    if (!file) return;
+
+    setSelectedFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
   };
 
   const handleImageUpload = async (file: File): Promise<number | null> => {
@@ -55,14 +71,17 @@ export const EditNews = ({ data }: EditNewsProps) => {
       formData.append("type", "news");
       formData.append("title", title);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/uploads`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${session.accessToken}`,
-      Accept: "application/json",
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/uploads`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${session.accessToken}`,
+            Accept: "application/json",
+          },
+          body: formData,
         },
-        body: formData,
-      });
+      );
 
       if (!response.ok) {
         throw new Error(await response.text());
@@ -87,43 +106,41 @@ export const EditNews = ({ data }: EditNewsProps) => {
     }
   };
 
- const onSubmit = async () => {
-  setIsSubmitting(true);
+  const onSubmit = async () => {
+    setIsSubmitting(true);
 
-  try {
-    let finalImageId = data.image_id ?? null;
+    try {
+      let finalImageId = data.image_id ?? null;
 
-    if (selectedFile) {
-      const uploadedId = await handleImageUpload(selectedFile);
-      if (!uploadedId) {
-        setIsSubmitting(false);
-        return;
+      if (selectedFile) {
+        const uploadedId = await handleImageUpload(selectedFile);
+        if (!uploadedId) {
+          setIsSubmitting(false);
+          return;
+        }
+        finalImageId = uploadedId;
       }
-      finalImageId = uploadedId;
+
+      const result = await updateNewsAction({
+        slug: data.slug,
+        title,
+        subtitle,
+        description,
+        image_id: finalImageId,
+      });
+
+      if (result.success) {
+        toast.success("News updated successfully");
+        router.push("/news");
+      } else {
+        toast.error(result.error || "Failed to update news");
+      }
+    } catch {
+      toast.error("Unexpected error");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    const result = await updateNewsAction({
-      slug: data.slug,      // 🔥 USE SLUG
-      title,
-      subtitle,
-      description,
-      image_id: finalImageId,
-    });
-
-    if (result.success) {
-      toast.success("News updated successfully");
-      router.push("/news");
-    } else {
-      toast.error(result.error || "Failed to update news");
-    }
-
-  } catch {
-    toast.error("Unexpected error");
-  } finally {
-    setIsSubmitting(false);
-  }
-};
-
+  };
 
   return (
     <div className="min-h-screen py-2xl bg-neutral-800 flex justify-center">
@@ -173,9 +190,7 @@ export const EditNews = ({ data }: EditNewsProps) => {
               <div className="relative w-full aspect-video overflow-hidden border border-white/10">
                 <Image
                   src={
-                    uploadedImage
-                      ? uploadedImage.url
-                      : URL.createObjectURL(selectedFile!)
+                    uploadedImage ? uploadedImage.url : previewUrl ?? ""
                   }
                   alt="Preview"
                   fill
@@ -186,6 +201,7 @@ export const EditNews = ({ data }: EditNewsProps) => {
                   onClick={() => {
                     setSelectedFile(null);
                     setUploadedImage(null);
+                    setPreviewUrl(null);
                   }}
                   className="absolute top-3 right-3 bg-red-500 text-white w-8 h-8 flex items-center justify-center"
                 >
